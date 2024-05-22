@@ -47,5 +47,12 @@ class ReservationController extends Controller
         $reservations = Reservation::where('user_id', auth()->user()->id)->with('evenement')->get();
         return view('myReserv', compact('reservations'));
     }
+
+    public function updateStatus(Request $request, $id) {
+        $reservation = Reservation::find($id);
+        $reservation->status = $request->input('status');
+        $reservation->save();
+        return redirect()->back()->with('success', 'Statut de la réservation mis à jour.');
+    }
 }
 

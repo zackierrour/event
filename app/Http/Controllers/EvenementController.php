@@ -47,12 +47,49 @@ class EvenementController extends Controller
 
     }
 
+
+
+    public function updateEvent(Request $request, $id){
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date' => 'required|date',
+            'lieu' => 'required|string|max:255',
+            'prix' => 'required|numeric',
+            'nbre_place' => 'required|integer|min:1',
+        ]);
+    
+        $event = Evenement::find($id);
+        $event->title = $request->input('title'); 
+        $event->description = $request->input('description');
+        $event->prix = $request->input('prix');
+        $event->date = $request->input('date');
+        $event->lieu = $request->input('lieu'); 
+        $event->nbre_place = $request->input('nbre_place');
+        
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $image->storeAs('public/images',$name);
+            $event->image = $name;
+        }
+        $event->save();
+    
+        return redirect()->back()->with('success', 'Event updated successfully');
+    
+    }
+
     public function deleteEvenement(Request $request, $id)
 {
     $evenement = Evenement::find($id);
     $evenement->delete();
     return redirect()->back()->with('success', 'Événement supprimé avec succès.');
 }
+
+
+
+
 
     
 }

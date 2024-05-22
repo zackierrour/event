@@ -96,14 +96,18 @@
                             <tbody>
                                 @foreach($evenements as $event)
                               <tr>
-                                <th scope="row">{{$event->id}}</th>
                                 <td>  <img src="storage/images/{{$event->image}}" alt="" class="img-fluid me-2" style="width: 50px; height: 50px; border-radius: 3%;">{{$event->title}}</td>
-                                <td>{{$event->description}} </td>
+                                <td>{{$event->description}}</td>
                                 <td>{{$event->date}}</td>
                                 <td>{{$event->lieu}}</td>
+                                
+                                
+                                
                                 <td>{{$event->prix}} DH</td>
                                 <td>{{$event->nbre_place}}</td>
                                 <td class="d-flex">
+                                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#updateModal-{{$event->id}}">update</button>
+                                
                                     <form action="{{ route('deleteevenement', ['id' => $event->id]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
@@ -113,6 +117,68 @@
 
                                 </td>
                               </tr>
+
+
+
+
+
+
+
+
+<!-- Update Modal -->
+<div class="modal fade" id="updateModal-{{$event->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateModalLabel-{{$event->id}}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="updateModalLabel-{{$event->id}}">Mettre à jour l'événement</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('updateevent', ['id' => $event->id])}}" method="POST" enctype="multipart/form-data">
+                    @csrf 
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="title">Titre</label>
+                        <input type="text" class="form-control" id="title" name="title" value="{{$event->title}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" id="description" name="description" value="{{$event->description}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" value="{{$event->date}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lieu">Lieu</label>
+                        <input type="text" class="form-control" id="lieu" name="lieu" value="{{$event->lieu}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image</label><br>
+                        <input type="file" class="form-control-file" id="image" name="image">
+                    </div>
+                    <div class="form-group">
+                        <label for="prix">Prix</label>
+                        <input type="number" class="form-control" id="prix" name="prix" value="{{$event->prix}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nbre_place">Nombre de places</label>
+                        <input type="number" class="form-control" id="nbre_place" name="nbre_place" value="{{$event->nbre_place}}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
                               @endforeach
                               
                             </tbody>

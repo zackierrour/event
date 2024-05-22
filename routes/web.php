@@ -33,23 +33,31 @@ Route::post('/loginUser', [AuthController::class, 'loginUser'])->name('loginuser
 Route::post('/registerUser', [AuthController::class, 'registerUser'])->name('registeruser');
 
 
-Route::post('/ajouterReservation',[ReservationController::class,'ajouterReservation'])->name('ajouterreservation');
-Route::get('/myReservation',[ReservationController::class, 'myReservation'])->name('myreservation');
-Route::get('/reservations', [ReservationController::class, 'getReservations'])->name('reservations');
+Route::group(['middleware' => ['IsAuth']], function (){
+    
+    Route::post('/ajouterReservation',[ReservationController::class,'ajouterReservation'])->name('ajouterreservation');
+    Route::get('/myReservation',[ReservationController::class, 'myReservation'])->name('myreservation');
+    Route::get('/logout', [AuthController::class, 'logOut'])->name('logout');
+
+});
+
+Route::group(['middleware' => ['IsAdmin']], function (){
+    Route::get('/reservations', [ReservationController::class, 'getReservations'])->name('reservations');
+    Route::get('dashboard',[AdminController::class,'getDash'])->name('dashboard');
+    Route::get('evenements',[EvenementController::class,'getEvenements'])->name('evenements');
+    Route::post('ajouterevent',[EvenementController::class,'ajouterEvent'])->name('ajouterevent');
+    Route::delete('deleteevenement/{id}',[EvenementController::class,'deleteEvenement'])->name('deleteevenement');
+    Route::put('/updateevenement/{id}', [EvenementController::class, 'updateEvent'])->name('updateevent');
+    Route::put('updatestatus/{id}',[ReservationController::class,'updateStatus'])->name('updatestatus');
+
+});
 
 
 
 
-Route::get('/logout', [AuthController::class, 'logOut'])->name('logout');
+
 
 // admin
-Route::get('dashboard',[AdminController::class,'getDash'])->name('dashboard');
-Route::get('evenements',[EvenementController::class,'getEvenements'])->name('evenements');
-
-Route::post('ajouterevent',[EvenementController::class,'ajouterEvent'])->name('ajouterevent');
-Route::delete('deleteevenement/{id}',[EvenementController::class,'deleteEvenement'])->name('deleteevenement');
-
-
 
 
 

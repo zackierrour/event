@@ -3,31 +3,42 @@
 @include ('layouts.head')
 
 <body>
-    @include ('layouts.nav')
-
+  @include ('layouts.nav')
+  <div class="container">
     <table class="table">
-        <thead>
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Name Event</th>
+          <th scope="col">Prix</th>
+          <th scope="col">Statu</th>   
+          <th scope="col">Print</th>
+        </tr>
+      </thead>
+      <tbody>
+          @foreach($reservations as $reservation)
           <tr>
-            <th scope="col">id</th>
-            <th scope="col">Name Event</th>
-            <th scope="col">Prix</th>
-            <th scope="col">Statu</th>   
-            <th scope="col">Print</th>
-          </tr>
-        </thead>
-        <tbody>
-            @foreach($reservations as $reservation)
-            <tr>
-            <th scope="row">{{$reservation->id}}</th>
-            <td>{{$reservation->evenement->title}}</td>
-            <td>{{$reservation->evenement->prix}}</td>
-            <td>{{$reservation->status}}</td>
+          <th scope="row">{{$reservation->id}}</th>
+          <td>{{$reservation->evenement->title}}</td>
+          <td>{{$reservation->evenement->prix}} DH</td>
+          <td>{{$reservation->status}}</td>
 
-            <td></td>
-            </tr>
-            @endforeach
-        </tbody>
-      </table>
+          <td>
+            <button class="btn btn-primary">
+              print
+
+            </button>
+
+          </td>
+          </tr>
+          @endforeach
+      </tbody>
+    </table>
+
+  </div>
+    
+
+    
 
 
 

@@ -58,6 +58,75 @@
     </style>
 </head>
 <body>
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            @include('admin.layoutsAdmin.aside')
+            <div class="col-md-9">
+                <!-- Contenu principal -->
+                <div class="content">
+                    <h2>Reservation</h2>
+                    
+
+                    
+                    <div class="mt-3">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">id</th>
+                                <th scope="col">Name Event</th>
+                                <th scope="col">Usrname</th>   
+                                <th scope="col">Prix</th>
+                                <th scope="col">Statu</th>   
+                                <th scope="col">accepter</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($reservations as $reservation)
+                                <tr>
+                                <th scope="row">{{$reservation->id}}</th>
+                                <td>{{$reservation->evenement->title}}</td>
+                                <td>{{$reservation->user->name}}</td>
+                    
+                                <td>{{$reservation->evenement->prix}}</td>
+                            
+                                <td>{{$reservation->status}}</td>
+                    
+                                <td>
+                                    @if($reservation->status == 'accepter')
+                                    <button class="btn btn-warning" type="button" disabled>Accepted"</button>
+                                    @else
+                                    <form action="{{route('updatestatus',$reservation->id)}}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-success">Accepter</button>
+                                        <input type="hidden" name="status" value="accepter">  
+                                    </form>
+                                    @endif
+
+                                </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                          </table>
+                    
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    
     <table class="table">
         <thead>
           <tr>
