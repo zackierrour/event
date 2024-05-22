@@ -46,7 +46,16 @@
   function printReservation(id, prix, type, evenement, status, userName, image, userEmail) {
       // Generate a unique ticket code
       var ticketCode = 'TICKET-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
-  
+
+      // Create an SVG element
+      var svgElement = document.createElement('svg');
+
+      // Generate the barcode and append it to the SVG element
+      JsBarcode(svgElement, ticketCode, {format: "CODE128"});
+
+      // Convert the SVG element to a data URL
+      var barcodeDataUrl = svgElement.outerHTML;
+
       var printContents = `
   <!DOCTYPE html>
   <html>
@@ -92,7 +101,9 @@
           <p>Type: <span style="color:red; font-weight:bold;">${type}</span></p>
           <p>Status: ${status}</p>
           <p>Ticket Code: ${ticketCode}</p>
-          <svg id="barcode"></svg>
+          <div style="width: 250px;">
+            ${barcodeDataUrl}
+            </div>
       </div>
   </body>
   </html>
@@ -103,9 +114,6 @@
       myWindow.document.close();
       myWindow.focus();
       myWindow.print();
-  
-      // Generate the barcode
-      JsBarcode("#barcode", ticketCode);
   }
   </script>
 
